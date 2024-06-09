@@ -1,30 +1,56 @@
-# React + TypeScript + Vite
+# TFG-CMC-APP
+Trabajo de fin de grado:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Título: C. M. C.
 
-Currently, two official plugins are available:
+Autor: Álvaro José Granados Valencia
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Introducción: El proyecto se realiza con el fin de desarrollar un juego que se pueda jugar en un navegador web.
+El juego será de uno contra uno en una pantalla de 2 dimensiones. Tendrá un menu principal, dónde podremos logearnos.
+Pero también existirá la opción de jugar como anónimo. Sin necesidad de logearse.
 
-## Expanding the ESLint configuration
+Finalidad: Crear una plataforma de entretenimiento gratuita, de fácil acceso y de control intuitivo.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Objetivos: 
 
-- Configure the top-level `parserOptions` property like this:
+1) Crear un entorno de clases y objetos con los que canvas pueda crear los
+gráficos y comportamientos propios del juego:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+    ● Player 1 sprite
+    ● Player 2 sprite
+    ● Barra de vida
+    ● Hitbox de los ataques
+    ● etc
+    
+2) Crear el menú principal con opciones de iniciar el juego
+ Empezar a jugar, cambiar los controles…
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3) Crear un entorno en que dos jugadores podrán jugar en local (sin online).
+Opción de multijugador.
+
+4) Crear la opción de registrarse en la web y tener una cuenta para jugar al juego.
+Nombre de usuario, contraseña, id, configuración de controles, etc…
+
+5) Implementar un sistema de mensajería o amistad en el que poder mandar
+invitaciones.
+
+6) Pulir las mecánicas y el gameplay. Sprites, música, efectos de sonido.
+
+7) Implementar Online con el sistema de invitaciones.
+
+8) Añadir 2 personajes más. (3 personajes en total) Y pulirlos. Junto a un sistema
+de selección de personajes.
+
+9) Testear el Online y el hosting de la web. Con posibilidad de añadir un lobby o
+un punto de encuentro para que los jugadores se enfrenten.
+
+10) Crear una Inteligencia artificial simple. Para que los jugadores puedan
+practicar
+
+Medios necesarios: 
+
+Docker, AWS (Despliegue automático). Git flow. 
+
+https://www.atlassian.com/es/git/tutorials/comparing-workflows/gitflow-workflow
+
+Planificación:
