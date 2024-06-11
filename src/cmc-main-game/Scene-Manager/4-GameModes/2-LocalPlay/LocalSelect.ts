@@ -35,7 +35,6 @@ export class LocalSelect extends Phaser.Scene {
             this.scene.start('MainMenu');
         })
 
-
         const changeP1: Phaser.GameObjects.Text = this.add.text(this.cameras.main.width / 2.5, 540,
             'P1 Fighter',
             {
@@ -46,6 +45,8 @@ export class LocalSelect extends Phaser.Scene {
 
         changeP1.on('pointerdown', () => {
             this.isP1Selecting = true;
+            changeP1.setFontSize(35);
+            changeP2.setFontSize(25);
         })
 
         const changeP2: Phaser.GameObjects.Text = this.add.text(this.cameras.main.width - this.cameras.main.width / 2.5, 540,
@@ -58,7 +59,10 @@ export class LocalSelect extends Phaser.Scene {
 
         changeP2.on('pointerdown', () => {
             this.isP1Selecting = false;
+            changeP1.setFontSize(25);
+            changeP2.setFontSize(35);
         })
+
 
         this.txt_p1_fighter = this.add.text(this.cameras.main.width / 2.5, 580,
             "",
@@ -141,10 +145,11 @@ export class LocalSelect extends Phaser.Scene {
 
         txt.on('pointerdown', () => {
 
-            if (this.isP1Selecting) {
+            if (this.isP1Selecting === true) {
                 this.p1_fighter = fighter;
             }
-            else {
+
+            if (this.isP1Selecting === false) {
                 this.p2_fighter = fighter;
             }
 

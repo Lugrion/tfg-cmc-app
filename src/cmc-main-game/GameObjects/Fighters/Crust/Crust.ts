@@ -1,4 +1,5 @@
 import Fighter from "../Fighter";
+import CrustBasicAttack from "./CrustBasicAttack";
 
 type fighterKeyControls = {
     goJump: number | string,
@@ -28,32 +29,186 @@ export default class Crust extends Fighter {
     constructor(
         spriteConfig: spriteBasicConfig,
         keyTemplate: fighterKeyControls,
-        identifier: number
     ) {
-        super(spriteConfig, keyTemplate, identifier)
+        super(spriteConfig, keyTemplate)
+        this.basicAttack = new CrustBasicAttack(spriteConfig, this);
+        this.setScale(2);
         this.setupAnimation();
+        this.play("c-idle")
+    }
+
+    goLeft() {
+        this.setVelocityX(-this.getSpeedStat());
+        if (this.body?.blocked.down && this.isAttackReady) {
+            this.anims.play('c-run', true);
+        } else if (this.isAttackReady) {
+            this.anims.play('c-fall', true);
+        }
+        this.flipX = true;
+        this.basicAttack.flipX = true;
+    }
+
+    goRight() {
+        this.setVelocityX(this.getSpeedStat());
+        if (this.body?.blocked.down && this.isAttackReady) {
+            this.anims.play('c-run', true);
+        } else if (this.isAttackReady) {
+            this.anims.play('c-fall', true);
+        }
+        this.flipX = false;
+        this.basicAttack.flipX = false;
+    }
+
+    goJump() {
+        this.setVelocityY(-this.getJumpStat());
+        
+        if (this.isAttackReady) this.anims.play('c-jump', true);
+    }
+
+    goIdle() {
+        this.setVelocityX(0);
+        if (this.body?.blocked.down && this.isAttackReady && !this.isFighterHit) this.anims.play('c-idle', true);
+    }
+
+    goAttack() {
+        this.isAttackReady = false;
+        this.anims.stop()
+        this.play('c-attack', true);
+
+        this.scene.time.addEvent({
+            // Slow attack, time until the attack slashes
+            delay: 230,
+            callback: () => {
+                this.isAttacking = true;
+                this.basicAttack.setVisible(true)
+
+                this.scene.time.addEvent({
+                    // Duration the attack hitbox is active and visible in milliseconds
+                    delay: 20,
+                    callback: () => {
+                        this.isAttacking = false;
+                        this.basicAttack.setVisible(false)
+
+                        this.scene.time.addEvent({
+                            // Cooldown of the attack
+                            delay: 100,
+                            callback: () => {
+                                // Fetch the cooldown
+                                this.isAttackReady = true;
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    newEnemyRules(enemy: Fighter) {
+        this.scene.physics.add.overlap(enemy.basicAttack, this, () => {
+            if (!this.isFighterHit && enemy.isAttacking) {
+                this.isFighterHit = true
+                this.gameHP -= enemy.getDmgStat();
+                this.tint = 0xff0000;
+                this.anims.stop()
+                this.anims.play('c-hit', true);
+                this.scene.time.addEvent({
+                    delay: 300,
+                    callback: () => {
+                        this.isFighterHit = false;
+                        this.tint = 0xffffff;
+                    }
+                });
+            }
+        })
     }
 
     setupAnimation() {
+
+        // Attack
         this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNames('fighterTest', {
-                prefix: 'idle' + '-',
-                end: 10
+            key: 'c-attack',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'attack' + '-',
+                end: 5
             }),
-            frameRate: 20,
-            repeat: -1
+            frameRate: 16,
+            repeat: 0
         });
 
+
+        // Death
         this.anims.create({
-            key: 'run',
-            frames: this.anims.generateFrameNames('fighterTest', {
-                prefix: 'run' + '-',
-                end: 11
+            key: 'c-death',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'death' + '-',
+                end: 5
             }),
-            frameRate: 20,
-            repeat: -1
+            frameRate: 16,
+            repeat: 0
         });
+
+
+        // Fall
+        this.anims.create({
+            key: 'c-fall',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'fall' + '-',
+                end: 1
+            }),
+            frameRate: 16,
+            repeat: 0
+        });
+
+
+        // Hit damage
+        this.anims.create({
+            key: 'c-hit',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'hit' + '-',
+                end: 3
+            }),
+            frameRate: 12,
+            repeat: 0
+        });
+
+
+        // Standing animation
+        this.anims.create({
+            key: 'c-idle',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'idle' + '-',
+                end: 7
+            }),
+            frameRate: 16,
+            repeat: 0
+        });
+
+        // Running animation
+        this.anims.create({
+            key: 'c-jump',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'jump' + '-',
+                end: 1
+            }),
+            frameRate: 16,
+            repeat: 0
+        });
+
+        // Running animation
+        this.anims.create({
+            key: 'c-run',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'run' + '-',
+                end: 7
+            }),
+            frameRate: 16,
+            repeat: 0
+        });
+
+
+
+
+
     }
 }
 

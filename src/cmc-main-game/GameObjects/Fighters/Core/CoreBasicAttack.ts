@@ -1,4 +1,5 @@
-import Fighter from "./Fighter";
+import Fighter from "../Fighter";
+
 
 type spriteBasicConfig = {
     current_scene: Phaser.Scene,
@@ -7,13 +8,14 @@ type spriteBasicConfig = {
     texture: string
 }
 
-export default class BasicAttack extends Phaser.Physics.Arcade.Sprite {
+export default class CoreBasicAttack extends Phaser.Physics.Arcade.Sprite {
 
     private fighter: Fighter;
 
     constructor(spriteConfig: spriteBasicConfig, fighterRef: Fighter) {
         super(spriteConfig.current_scene, spriteConfig.x, spriteConfig.y, "");
         this.fighter = fighterRef;
+        this.setTexture("core_attack")
         this.init();
     }
 
@@ -24,11 +26,11 @@ export default class BasicAttack extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        this.body?.setSize(3, 3);
+        this.body?.setSize(60, 20);
         if (this.flipX) {
-            this.setPosition(this.fighter.x - 30, this.fighter.y);
+            this.setPosition(this.fighter.x - 40, this.fighter.y);
         } else {
-            this.setPosition(this.fighter.x + 30, this.fighter.y);
+            this.setPosition(this.fighter.x + 40, this.fighter.y);
 
         }
         this.setVelocity(0, 0);

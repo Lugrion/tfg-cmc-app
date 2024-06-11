@@ -26,12 +26,15 @@ export default class FighterFactory {
     static createFighter(fighterType: fighterType, spriteConfig: spriteBasicConfig, keyTemplate : fighterKeyControls): Fighter {
         switch (fighterType) {
             case "core": {
+                spriteConfig.texture = "fighterCore";
                 return new Core(spriteConfig, keyTemplate);
             }
             case "mantle": {
+                spriteConfig.texture = "fighterMantle";
                 return new Mantle(spriteConfig, keyTemplate);
             }
             case "crust": {
+                spriteConfig.texture = "fighterCrust";
                 return new Crust(spriteConfig, keyTemplate);
             }
         }

@@ -7,6 +7,13 @@ type fighterKeyControls = {
     basicAttackKey: number | string
 }
 
+type fighterControls = {
+    goJump: Phaser.Input.Keyboard.Key,
+    goLeft: Phaser.Input.Keyboard.Key,
+    goRight: Phaser.Input.Keyboard.Key,
+    basicAttackKey: Phaser.Input.Keyboard.Key
+}
+
 type spriteBasicConfig = {
     current_scene: Phaser.Scene,
     x: number,
@@ -20,8 +27,8 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         hp: 100,
         speed: 300,
         jump: 400,
-        height: 60,
-        width: 35,
+        height: 43,
+        width: 30,
         time: 1,
         dmg: 10,
     });
@@ -65,28 +72,28 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         return this._defaultStats.time * this._multiplier.time;
     }
 
-    private controls: object | undefined;
+    protected controls: object | undefined | fighterControls;
 
-    public readonly basicAttack: BasicAttack;
+    public basicAttack!: Phaser.Physics.Arcade.Sprite;
 
-    public readonly id: number;
+    public isFighterHit: boolean = false;
+
+    public isAttackReady: boolean = true;
+
+    public isAttacking: boolean = false;
+
+    public gameHP: number = this.getHpStat();
 
     constructor(
         spriteConfig: spriteBasicConfig,
-        keyTemplate: fighterKeyControls,
-        identifier: number
+        keyTemplate: fighterKeyControls
     ) {
         super(spriteConfig.current_scene, spriteConfig.x, spriteConfig.y, spriteConfig.texture);
 
         this.scene = spriteConfig.current_scene;
 
-        this.id = identifier;
-
         // Build Controls
         this.updateControls(keyTemplate);
-
-        // Setup Basic Attack
-        this.basicAttack = new BasicAttack(spriteConfig, this);
 
         this.init();
     }
@@ -102,43 +109,67 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         this.controls = this.scene.input.keyboard?.addKeys(keyTemplate);
     }
 
+    goLeft() {
+        console.log("LEFT")
+    }
+
+    goRight() {
+        console.log("RIGHT")
+    }
+
+    goJump() {
+        console.log("JUMP")
+    }
+
+    goAttack() {
+        console.log("ATTACK")
+    }
+
+    goIdle() {
+        console.log("IDLE")
+    }
 
     basicMovement() {
         if (this.controls == undefined) { return }
+       
         if (this.controls.goLeft.isDown) {
-            this.setVelocityX(-this.getSpeedStat());
-            if (this.body?.blocked.down) this.anims.play('run', true);
-            this.flipX = true;
-            this.basicAttack.flipX = true;
+            this.goLeft()
         } else if (this.controls.goRight.isDown) {
-            this.setVelocityX(this.getSpeedStat());
-            if (this.body?.blocked.down) this.anims.play('run', true);
-            this.flipX = false;
-            this.basicAttack.flipX = false;
+            this.goRight()
         } else {
-            this.setVelocityX(0);
-            this.anims.play('idle', true);
+            this.goIdle()
         }
+
 
         if (this.controls.goJump.isDown && this.body?.blocked.down) {
-            this.setVelocityY(-this.getJumpStat());
-            this.anims.stop();
+            this.goJump()
+        }
+
+        if (this.controls.basicAttackKey.isDown && this.isAttackReady && !this.isAttacking) {
+            this.goAttack()
         }
     }
 
-    attack() {
-        if (this.controls == undefined) { return }
-        if (this.controls.basicAttackKey.isDown) {
-            this.basicAttack.setVisible(true)
-            console.log('attack')
-        }
-        this.basicAttack.setVisible(false)
+    newEnemyRules(enemy: Fighter){
+        console.log("New Rules! " + enemy)
     }
 
+
+    addEnemy(enemy: Fighter) {
+        this.newEnemyRules(enemy)
+    }
 
     update(): void {
+        // Update the weapon
+        this.basicAttack.update()
+
+
+
+        // TO DO
+        // Manage being able to move while being alive
         this.basicMovement();
-        this.attack();
+
+
         // Check size stats
         this.body?.setSize(this.getWidthStat(), this.getHeightStat());
     }

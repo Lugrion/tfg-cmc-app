@@ -48,13 +48,29 @@ export class Preloader extends Phaser.Scene
         
 
         // Crust
-
+        this.load.atlas('fighterCrust', 'Fighters/Crust/crust.png', 'Fighters/Crust/crust.json');
 
         // Mantle
+        this.load.atlas('fighterMantle', 'Fighters/Mantle/mantle.png', 'Fighters/Mantle/mantle.json');
 
 
         // Core
+        const core_attack = this.make.text({
+            add: true,
+            x: 0,
+            y: 0,
+            text: "XDDD",
+            style: {
+                fontSize: 18,
+                fontFamily: 'Arial Black',
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 8,
+                align: 'center',
+            }
+        })
 
+        this.textures.addCanvas('core_attack', core_attack.canvas);
         
         
     }

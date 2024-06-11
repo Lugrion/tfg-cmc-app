@@ -1,6 +1,5 @@
 import { EventBus } from "../../../Config/EventBus";
 import UserControlsFactory from "../../../Config/UserControlsFactory";
-import BasicAttack from "../../../GameObjects/Fighters/BasicAttack";
 import Fighter from "../../../GameObjects/Fighters/Fighter";
 import FighterFactory from "../../../GameObjects/Fighters/FighterFactory";
 
@@ -15,15 +14,6 @@ export class LocalPlay extends Phaser.Scene {
     private fighter_P1!: Fighter;
     private fighter_P2!: Fighter;
 
-    private p1HP!: number;
-    private p2HP!: number;
-
-    private basicAttackP1!: BasicAttack;
-    private basicAttackP2!: BasicAttack;
-
-    private isP1gettinHit: boolean = false;
-    private isP2gettinHit: boolean = false;
-
     constructor() {
         super('LocalPlay');
     }
@@ -35,20 +25,19 @@ export class LocalPlay extends Phaser.Scene {
     }
 
     create(data: any) {
-        // Ensure the background image exists
+        // Background
         this.add.image(this.cameras.main.width / 2, 320, 'background3').setScale(2);
 
-        // Initialize map_container and related properties in create method
+        // Map tiles
         this.setupMapTiles();
 
+        // Ensure camera limits
         this.cameras.main.setBounds(0, 0, this.map_container.widthInPixels, this.map_container.heightInPixels);
-        // Set collision for the layer
+        
+        // Setup Fighters logic
         this.spawnFighters(data);
 
-
-
         this.setupPhysics();
-
 
         EventBus.emit('current-scene-ready', this);
     }
@@ -60,27 +49,24 @@ export class LocalPlay extends Phaser.Scene {
     }
 
     spawnFighters(data: any) {
+
         this.fighter_P1 = FighterFactory.createFighter(data.p1Fighter, {
             current_scene: this,
             x: 100,
             y: this.height / 2,
-            texture: 'fighterTest'
+            texture: ""
         }, UserControlsFactory.createUserControls("p1"));
-
-        this.basicAttackP1 = this.fighter_P1.basicAttack;
-        this.p1HP = this.fighter_P1.getHpStat();
         
         this.fighter_P2 = FighterFactory.createFighter(data.p2Fighter, {
             current_scene: this,
             x: 860,
             y: this.height / 2,
-            texture: 'fighterTest'
+            texture: ""
         }, UserControlsFactory.createUserControls("p2"));
-        
-        this.basicAttackP2 = this.fighter_P2.basicAttack;
-        this.p2HP = this.fighter_P2.getHpStat();
-    }
 
+        this.fighter_P1.addEnemy(this.fighter_P2);
+        this.fighter_P2.addEnemy(this.fighter_P1);
+    }
 
     setupPhysics() {
         this.map_layer.setCollisionByExclusion([-1]);
@@ -88,48 +74,11 @@ export class LocalPlay extends Phaser.Scene {
         this.physics.add.collider(this.fighter_P1, this.map_layer);
         this.physics.add.collider(this.fighter_P2, this.map_layer);
 
-        this.physics.add.overlap(this.basicAttackP1, this.fighter_P2, (() => this.handleDamagetoP2()))
-        this.physics.add.overlap(this.basicAttackP2, this.fighter_P1, (() => this.handleDamagetoP1()))
-
+        this.physics.add.collider(this.fighter_P2, this.fighter_P1);
     }
-
-    handleDamagetoP1() {
-        if(!this.isP1gettinHit){
-            this.isP1gettinHit = true
-            console.log("P1 WAS DAMAGED");
-            this.p1HP -= this.fighter_P2.getDmgStat();
-            this.fighter_P1.tint = 0xff0000;
-            this.time.addEvent({
-                delay: 600,
-                callback: () => {
-                    this.isP1gettinHit = false;
-                    this.fighter_P1.tint = 0xffffff;
-                }
-            });
-        }
-    }
-
-    handleDamagetoP2() {
-        if(!this.isP2gettinHit){
-            this.isP2gettinHit = true
-            console.log("P1 WAS DAMAGED");
-            this.p2HP -= this.fighter_P1.getDmgStat();
-            this.fighter_P2.tint = 0xff0000;
-            this.time.addEvent({
-                delay: 600,
-                callback: () => {
-                    this.isP2gettinHit = false;
-                    this.fighter_P2.tint = 0xffffff;
-                }
-            });
-        }
-    }
-
 
     update() {
         this.fighter_P1.update();
         this.fighter_P2.update();
-        this.basicAttackP1.update();
-        this.basicAttackP2.update();
     }
 }
