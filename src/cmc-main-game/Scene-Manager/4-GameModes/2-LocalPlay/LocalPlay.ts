@@ -3,19 +3,20 @@ import UserControlsFactory from "../../../Config/UserControlsFactory";
 import Fighter from "../../../GameObjects/Fighters/Fighter";
 import FighterFactory from "../../../GameObjects/Fighters/FighterFactory";
 
+type fighterType = "core" | "mantle" | "crust";
+
 export class LocalPlay extends Phaser.Scene {
     private width!: number;
     private height!: number;
 
     private map_container!: Phaser.Tilemaps.Tilemap;
-    private map_packer!: Phaser.Tilemaps.Tileset;
-    private map_layer!: Phaser.Tilemaps.TilemapLayer;
+    private map_packer!: Phaser.Tilemaps.Tileset | null;
+    private map_layer!: Phaser.Tilemaps.TilemapLayer | null;
 
     public fighter_P1!: Fighter;
     public fighter_P2!: Fighter;
 
-    private isOver: boolean = false;
-    private isStarting: boolean = true;
+    public isStarting: boolean = true;
 
     constructor() {
         super('LocalPlay');
@@ -26,13 +27,12 @@ export class LocalPlay extends Phaser.Scene {
         this.width = this.cameras.main.width;
         this.height = this.cameras.main.height;
 
-        this.isOver = false;
         this.isStarting = true;
     }
 
-    create(data: any) {
+    create(data: {p1Fighter: fighterType, p2Fighter: fighterType}) {
         // Background
-        this.add.image(this.cameras.main.width / 2, 320, 'background3').setScale(2);
+        this.add.image(this.width / 2, 320, 'background3').setScale(2);
 
         // Map tiles
         this.setupMapTiles();
@@ -51,10 +51,11 @@ export class LocalPlay extends Phaser.Scene {
     setupMapTiles() {
         this.map_container = this.make.tilemap({ key: 'mapTest', tileWidth: 16, tileHeight: 16 });
         this.map_packer = this.map_container.addTilesetImage('TerrainTest');
+        if(this.map_packer == null) {return}
         this.map_layer = this.map_container.createLayer('Platforms', this.map_packer);
     }
 
-    spawnFighters(data: any) {
+    spawnFighters(data: {p1Fighter: fighterType, p2Fighter: fighterType}) {
 
         this.fighter_P1 = FighterFactory.createFighter(data.p1Fighter, {
             current_scene: this,
@@ -75,6 +76,7 @@ export class LocalPlay extends Phaser.Scene {
     }
 
     setupPhysics() {
+        if(this.map_layer == null) {return}
         this.map_layer.setCollisionByExclusion([-1]);
         this.physics.world.bounds.setTo(0, 0, this.map_container.widthInPixels, this.map_container.heightInPixels);
         this.physics.add.collider(this.fighter_P1, this.map_layer);

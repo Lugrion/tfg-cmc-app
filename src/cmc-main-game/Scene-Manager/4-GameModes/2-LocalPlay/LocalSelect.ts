@@ -37,11 +37,21 @@ export class LocalSelect extends Phaser.Scene {
 
         this.playerFighterSelector()
 
+        this.createMenuFighterAnimations()
+
         this.characterEntriesBuilder(this.cameras.main.width / 4, 200, 'Core', "core", 0)
+        
+        this.add.sprite(this.cameras.main.width / 4, 350, 'fighterCore').setOrigin(0.5).setScale(4).play('idle')
+
         this.characterEntriesBuilder(this.cameras.main.width / 2, 200, 'Mantle', "mantle", 1)
+
+        this.add.sprite(this.cameras.main.width / 2, 350, 'fighterMantle').setOrigin(0.5).setScale(4).play('m-idle')
+
         this.characterEntriesBuilder(this.cameras.main.width / 4 * 3, 200, 'Crust', "crust", 2)
 
+        this.add.sprite(this.cameras.main.width / 4 * 3, 350, 'fighterCrust').setOrigin(0.5).setScale(4).play('c-idle')
         
+
 
         this.add.text(this.cameras.main.width / 8, 550, 'Game Mode: \n ' + 'Local Play', {
             fontFamily: 'Arial Black', fontSize: 30, color: '#ffffff',
@@ -158,6 +168,42 @@ export class LocalSelect extends Phaser.Scene {
             }
 
         });
+    }
+
+    createMenuFighterAnimations(){
+        // Core
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNames('fighterCore', {
+                prefix: 'idle' + '-',
+                end: 10
+            }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        // Mantle
+        this.anims.create({
+            key: 'm-idle',
+            frames: this.anims.generateFrameNames('fighterMantle', {
+                prefix: 'idle' + '-',
+                end: 8
+            }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        // Crust
+        this.anims.create({
+            key: 'c-idle',
+            frames: this.anims.generateFrameNames('fighterCrust', {
+                prefix: 'idle' + '-',
+                end: 7
+            }),
+            frameRate: 16,
+            repeat: -1
+        });
+
     }
 
     update(): void {

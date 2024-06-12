@@ -14,11 +14,12 @@ export default class PracticeHUD extends Phaser.Scene {
         this.width = this.cameras.main.width;
         this.height = this.cameras.main.height;
         this.game_scene = this.scene.get('PracticePlay');
+
     }
 
     create() {
-        
-        const go_back: Phaser.GameObjects.Text = this.add.text(this.cameras.main.width / 12, 40, '<Menu', {
+
+        const go_back: Phaser.GameObjects.Text = this.add.text(this.width / 12, 40, '<Menu', {
             fontFamily: 'Arial Black', fontSize: 25, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'left'
@@ -32,5 +33,5 @@ export default class PracticeHUD extends Phaser.Scene {
         })
     }
 
-    
+
 }

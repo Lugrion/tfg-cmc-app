@@ -10,8 +10,8 @@ export default class LocalHUD extends Phaser.Scene {
     private txt_hpP1!: Phaser.GameObjects.Text;
     private txt_hpP2!: Phaser.GameObjects.Text;
 
-    private txt_start_time: Phaser.GameObjects.Text;
-    private txt_time: Phaser.GameObjects.Text;
+    private txt_start_time!: Phaser.GameObjects.Text;
+    private txt_time!: Phaser.GameObjects.Text;
 
     private start_countdown: number = 3;
     private countdown: number = 60; // Initial countdown value in seconds
@@ -33,8 +33,8 @@ export default class LocalHUD extends Phaser.Scene {
     init() {
         this.width = this.cameras.main.width;
         this.height = this.cameras.main.height;
-
-        this.game_scene = this.scene.get('LocalPlay');
+        this.game_scene  = this.scene.get('LocalPlay');
+        
 
         this.start_countdown = 3;
         this.countdown = 60;

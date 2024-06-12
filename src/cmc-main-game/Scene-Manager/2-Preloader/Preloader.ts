@@ -42,23 +42,8 @@ export class Preloader extends Phaser.Scene
 
         // FIGHTERS
         // Core
-        this.load.atlas('fighterCore', 'Fighters/Core/core.png', 'Fighters/Core/core.json');
-        const core_attack = this.make.text({
-            add: true,
-            x: 0,
-            y: 0,
-            text: "XDDD",
-            style: {
-                fontSize: 18,
-                fontFamily: 'Arial Black',
-                color: '#ffffff',
-                stroke: '#000000',
-                strokeThickness: 8,
-                align: 'center',
-            }
-        })
-
-        this.textures.addCanvas('core_attack', core_attack.canvas);
+        this.loadCoreAssets();
+        
         
 
         // Crust
@@ -79,5 +64,25 @@ export class Preloader extends Phaser.Scene
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
+    }
+
+    loadCoreAssets(){
+        this.load.atlas('fighterCore', 'Fighters/Core/core.png', 'Fighters/Core/core.json');
+        const core_attack = this.make.text({
+            add: true,
+            x: 0,
+            y: 0,
+            text: "XDDD",
+            style: {
+                fontSize: 18,
+                fontFamily: 'Arial Black',
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 8,
+                align: 'center',
+            }
+        })
+
+        this.textures.addCanvas('core_attack', core_attack.canvas);
     }
 }
