@@ -33,8 +33,6 @@ export class Preloader extends Phaser.Scene
         this.load.image('background', 'bg.png');
         this.load.image('background2', 'bg2.png');
         this.load.image('background3', 'bg3.png');
-        this.load.image('logo', 'logo.png');
-        this.load.image('star', 'star.png');
 
 
         // MAPS
@@ -43,18 +41,8 @@ export class Preloader extends Phaser.Scene
         this.load.image('TerrainTest', 'Arenas/Test/TerrainTest.png');
 
         // FIGHTERS
-        // Test
-        this.load.atlas('fighterTest', 'Fighters/Test/ninjafrog.png', 'Fighters/Test/ninjafrog.json');
-        
-
-        // Crust
-        this.load.atlas('fighterCrust', 'Fighters/Crust/crust.png', 'Fighters/Crust/crust.json');
-
-        // Mantle
-        this.load.atlas('fighterMantle', 'Fighters/Mantle/mantle.png', 'Fighters/Mantle/mantle.json');
-
-
         // Core
+        this.load.atlas('fighterCore', 'Fighters/Core/core.png', 'Fighters/Core/core.json');
         const core_attack = this.make.text({
             add: true,
             x: 0,
@@ -71,6 +59,15 @@ export class Preloader extends Phaser.Scene
         })
 
         this.textures.addCanvas('core_attack', core_attack.canvas);
+        
+
+        // Crust
+        this.load.atlas('fighterCrust', 'Fighters/Crust/crust.png', 'Fighters/Crust/crust.json');
+
+        // Mantle
+        this.load.atlas('fighterMantle', 'Fighters/Mantle/mantle.png', 'Fighters/Mantle/mantle.json');
+
+
         
         
     }

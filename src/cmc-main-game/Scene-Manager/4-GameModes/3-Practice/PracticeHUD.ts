@@ -25,6 +25,8 @@ export default class PracticeHUD extends Phaser.Scene {
         }).setDepth(100).setOrigin(0.5).setInteractive();
 
         go_back.on('pointerdown', () => {
+            this.scene.stop('PracticePlay');
+            this.scene.stop('PracticeHUD');
             this.scene.start('MainMenu');
             this.scene.bringToTop('MainMenu');
         })

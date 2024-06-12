@@ -29,6 +29,7 @@ export class PracticeSelect extends Phaser.Scene {
         }).setDepth(100).setOrigin(0.5).setInteractive();
 
         go_back.on('pointerdown', () => {
+            this.scene.stop('PracticeSelect');
             this.scene.start('MainMenu');
         })
 

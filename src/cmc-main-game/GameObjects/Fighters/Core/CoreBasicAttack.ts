@@ -15,7 +15,7 @@ export default class CoreBasicAttack extends Phaser.Physics.Arcade.Sprite {
     constructor(spriteConfig: spriteBasicConfig, fighterRef: Fighter) {
         super(spriteConfig.current_scene, spriteConfig.x, spriteConfig.y, "");
         this.fighter = fighterRef;
-        this.setTexture("core_attack")
+        this.setTexture("core_attack").setDepth(100)
         this.init();
     }
 

@@ -2,23 +2,29 @@ import { LocalPlay } from "./LocalPlay";
 
 export default class LocalHUD extends Phaser.Scene {
 
-    private width: number;
-    private height: number;
+    private width!: number;
+    private height!: number;
 
-    private game_scene: LocalPlay;
+    private game_scene!: LocalPlay;
 
-    private txt_hpP1: Phaser.GameObjects.Text;
-    private txt_hpP2: Phaser.GameObjects.Text;
+    private txt_hpP1!: Phaser.GameObjects.Text;
+    private txt_hpP2!: Phaser.GameObjects.Text;
 
     private txt_start_time: Phaser.GameObjects.Text;
     private txt_time: Phaser.GameObjects.Text;
 
     private start_countdown: number = 3;
-    private countdown: number = 99; // Initial countdown value in seconds
+    private countdown: number = 60; // Initial countdown value in seconds
     private countdownTimer!: Phaser.Time.TimerEvent; // Timer event for countdown
 
     private p1HP!: number;
     private p2HP!: number;
+
+    private p1MaxHP!: number;
+    private p2MaxHP!: number;
+
+    private hpBarP1!: Phaser.GameObjects.Rectangle
+    private hpBarP2!: Phaser.GameObjects.Rectangle
 
     constructor() {
         super('LocalHUD');
@@ -29,6 +35,9 @@ export default class LocalHUD extends Phaser.Scene {
         this.height = this.cameras.main.height;
 
         this.game_scene = this.scene.get('LocalPlay');
+
+        this.start_countdown = 3;
+        this.countdown = 60;
     }
 
     create() {
@@ -61,13 +70,23 @@ export default class LocalHUD extends Phaser.Scene {
     }
 
     setupHpHud() {
-        this.txt_hpP1 = this.add.text(this.width / 12, 40, 'P1 HP: ', {
+        // HP bar for P1
+        this.add.rectangle(this.width / 4, 40, 400, 32).setStrokeStyle(1, 0xffffff)
+        this.hpBarP1 = this.add.rectangle(this.width / 4 - 200, 40, 400, 32, 0xff0000).setOrigin(0, 0.5)
+        this.p1MaxHP = this.game_scene.fighter_P1.gameHP;
+        
+        // HP bar for P2
+        this.add.rectangle(this.width - this.width / 4, 40, 400, 32).setStrokeStyle(1, 0xffffff)
+        this.hpBarP2 = this.add.rectangle(this.width - this.width / 4 - 200, 40, 400, 32, 0x0000ff).setOrigin(0, 0.5)
+        this.p2MaxHP = this.game_scene.fighter_P2.gameHP
+
+        this.txt_hpP1 = this.add.text(this.width / 10, 70, 'P1 HP: ', {
             fontFamily: 'Arial Black', fontSize: 20, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setDepth(100).setOrigin(0.5);
 
-        this.txt_hpP2 = this.add.text(this.width - this.width / 12, 40, 'P2 HP: ', {
+        this.txt_hpP2 = this.add.text(this.width - this.width / 10, 70, 'P2 HP: ', {
             fontFamily: 'Arial Black', fontSize: 20, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -80,6 +99,13 @@ export default class LocalHUD extends Phaser.Scene {
 
         this.txt_hpP1.text = "p1HP: " + this.p1HP;
         this.txt_hpP2.text = "p2HP: " + this.p2HP;
+
+        // Update HP bars
+        const p1MaxWidth = 400
+        const p2MaxWidth = 400
+
+        this.hpBarP1.width = (this.p1HP / this.p1MaxHP) * p1MaxWidth
+        this.hpBarP2.width = (this.p2HP / this.p2MaxHP) * p2MaxWidth
     }
 
     updateStartTimer() {
@@ -144,14 +170,11 @@ export default class LocalHUD extends Phaser.Scene {
     }
 
     goNextScene(winner: string) {
-        
-
         this.time.addEvent({
             // Enough time for the animations to finish
-            delay: 2000,
+            delay: 1800,
             callback: () => {
                 this.scene.stop('LocalPlay')
-                this.scene.remove('LocalPlay')
                 this.scene.stop();
                 this.scene.start('LocalOver', { winner: winner });
                 this.scene.bringToTop('LocalOver')

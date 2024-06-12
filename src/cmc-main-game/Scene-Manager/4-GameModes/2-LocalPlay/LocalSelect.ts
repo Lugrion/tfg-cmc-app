@@ -35,6 +35,38 @@ export class LocalSelect extends Phaser.Scene {
             this.scene.start('MainMenu');
         })
 
+        this.playerFighterSelector()
+
+        this.characterEntriesBuilder(this.cameras.main.width / 4, 200, 'Core', "core", 0)
+        this.characterEntriesBuilder(this.cameras.main.width / 2, 200, 'Mantle', "mantle", 1)
+        this.characterEntriesBuilder(this.cameras.main.width / 4 * 3, 200, 'Crust', "crust", 2)
+
+        
+
+        this.add.text(this.cameras.main.width / 8, 550, 'Game Mode: \n ' + 'Local Play', {
+            fontFamily: 'Arial Black', fontSize: 30, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setDepth(100).setOrigin(0.5)
+
+
+        this.start_game_txt = this.add.text(this.cameras.main.width - this.cameras.main.width / 8, 600, 'Start game', {
+            fontFamily: 'Arial Black', fontSize: 30, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setDepth(100).setOrigin(0.5).setInteractive().setVisible(false);
+
+
+        this.start_game_txt.on('pointerdown', () => {
+            this.scene.start('LocalPlay', { p1Fighter: this.p1_fighter, p2Fighter: this.p2_fighter });
+            this.scene.start('LocalHUD')
+            this.scene.bringToTop('LocalHUD')
+        })
+
+        EventBus.emit('current-scene-ready', this);
+    }
+
+    playerFighterSelector() {
         const changeP1: Phaser.GameObjects.Text = this.add.text(this.cameras.main.width / 2.5, 540,
             'P1 Fighter',
             {
@@ -79,34 +111,6 @@ export class LocalSelect extends Phaser.Scene {
                 stroke: '#000000', strokeThickness: 8,
                 align: 'left'
             }).setDepth(100).setOrigin(0.5).setInteractive();
-
-
-
-        this.characterEntriesBuilder(this.cameras.main.width / 4, 200, 'Core', "core", 0)
-        this.characterEntriesBuilder(this.cameras.main.width / 2, 200, 'Mantle', "mantle", 1)
-        this.characterEntriesBuilder(this.cameras.main.width / 4 * 3, 200, 'Crust', "crust", 2)
-
-        this.add.text(this.cameras.main.width / 8, 550, 'Game Mode: \n ' + 'Local Play', {
-            fontFamily: 'Arial Black', fontSize: 30, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setDepth(100).setOrigin(0.5)
-
-
-        this.start_game_txt = this.add.text(this.cameras.main.width - this.cameras.main.width / 8, 600, 'Start game', {
-            fontFamily: 'Arial Black', fontSize: 30, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setDepth(100).setOrigin(0.5).setInteractive().setVisible(false);
-
-
-        this.start_game_txt.on('pointerdown', () => {
-            this.scene.start('LocalPlay', { p1Fighter: this.p1_fighter, p2Fighter: this.p2_fighter });
-            this.scene.start('LocalHUD')
-            this.scene.bringToTop('LocalHUD')
-        })
-
-        EventBus.emit('current-scene-ready', this);
     }
 
     characterEntriesBuilder(x: number, y: number, text: string, fighter: string, id: number) {

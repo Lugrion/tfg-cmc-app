@@ -29,9 +29,9 @@ export class MainMenu extends Scene {
         // Press to continue to play
 
 
-        this.menuEntriesBuilder(this.width / 2, 260, 'Net Play', 'NetSelect', 0);
-        this.menuEntriesBuilder(this.width / 2, 340, 'Local Play', 'LocalSelect', 1);
-        this.menuEntriesBuilder(this.width / 2, 420, 'Practice', 'PracticeSelect', 2);
+        this.menuEntriesBuilder(this.width / 2, 260, 'Local Play', 'LocalSelect', 1);
+        this.menuEntriesBuilder(this.width / 2, 340, 'Practice', 'PracticeSelect', 2);
+        this.menuEntriesBuilder(this.width / 2, 420, 'Net Play', 'NetSelect', 0);
         EventBus.emit('current-scene-ready', this);
     }
 
@@ -61,7 +61,6 @@ export class MainMenu extends Scene {
             lifespan: { min: 1, max: 200 }
         }).setVisible(false);
 
-
         txt.on('pointerover', () => {
             particles.setVisible(true);
         });
@@ -71,6 +70,7 @@ export class MainMenu extends Scene {
         });
 
         txt.on('pointerdown', () => {
+            this.scene.stop('MainMenu')
             this.scene.start(scene);
         });
     }

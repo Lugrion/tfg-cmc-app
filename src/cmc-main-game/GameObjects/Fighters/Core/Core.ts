@@ -20,8 +20,8 @@ export default class Core extends Fighter {
         hp: 0.5,
         speed: 1.5,
         jump: 1.5,
-        height: 0.5,
-        width: 0.5,
+        height: 0.75,
+        width: 0.75,
         time: 1,
         dmg: 0.5
     }
@@ -32,6 +32,7 @@ export default class Core extends Fighter {
     ) {
         super(spriteConfig, keyTemplate)
         this.basicAttack = new CoreBasicAttack(spriteConfig, this);
+        this.gameHP = this.getHpStat()
         this.setupAnimation();
     }
 
@@ -83,6 +84,7 @@ export default class Core extends Fighter {
     }
 
     finalWill(){
+        this.angle = 90;
         this.tint = 0x5A1F13;
     }
 
@@ -110,7 +112,7 @@ export default class Core extends Fighter {
     setupAnimation() {
         this.anims.create({
             key: 'idle',
-            frames: this.anims.generateFrameNames('fighterTest', {
+            frames: this.anims.generateFrameNames('fighterCore', {
                 prefix: 'idle' + '-',
                 end: 10
             }),
@@ -120,7 +122,7 @@ export default class Core extends Fighter {
 
         this.anims.create({
             key: 'run',
-            frames: this.anims.generateFrameNames('fighterTest', {
+            frames: this.anims.generateFrameNames('fighterCore', {
                 prefix: 'run' + '-',
                 end: 11
             }),

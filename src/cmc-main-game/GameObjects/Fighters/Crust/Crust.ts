@@ -33,6 +33,7 @@ export default class Crust extends Fighter {
         super(spriteConfig, keyTemplate)
         this.basicAttack = new CrustBasicAttack(spriteConfig, this);
         this.setScale(2);
+        this.gameHP = this.getHpStat()
         this.setupAnimation();
         this.play("c-idle")
     }
@@ -80,14 +81,12 @@ export default class Crust extends Fighter {
             delay: 230,
             callback: () => {
                 this.isAttacking = true;
-                this.basicAttack.setVisible(true)
 
                 this.scene.time.addEvent({
                     // Duration the attack hitbox is active and visible in milliseconds
                     delay: 20,
                     callback: () => {
                         this.isAttacking = false;
-                        this.basicAttack.setVisible(false)
 
                         this.scene.time.addEvent({
                             // Cooldown of the attack

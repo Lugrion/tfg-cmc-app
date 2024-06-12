@@ -82,7 +82,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
     public isDead: boolean = false;
 
-    public gameHP: number = this.getHpStat();
+    public gameHP: number;
 
     constructor(
         spriteConfig: spriteBasicConfig,
@@ -94,7 +94,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
         // Build Controls
         this.updateControls(keyTemplate);
-
+        this.gameHP = this.getHpStat()
         this.init();
     }
 
@@ -159,7 +159,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         this.newEnemyRules(enemy)
     }
 
-    finalWill(){
+    finalWill() {
         console.log("Y-you win...");
     }
 
@@ -177,11 +177,11 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
             // Check size stats
             this.body?.setSize(this.getWidthStat(), this.getHeightStat());
-        } else if(this.isDead == false){
+        } else if (this.isDead == false) {
             this.finalWill()
             this.isDead = true
-        }  else{
-            this.setVelocity(0,0);
+        } else {
+            this.setVelocity(0, 0);
         }
     }
 }

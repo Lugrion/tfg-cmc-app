@@ -11,8 +11,8 @@ export class LocalPlay extends Phaser.Scene {
     private map_packer!: Phaser.Tilemaps.Tileset;
     private map_layer!: Phaser.Tilemaps.TilemapLayer;
 
-    private fighter_P1!: Fighter;
-    private fighter_P2!: Fighter;
+    public fighter_P1!: Fighter;
+    public fighter_P2!: Fighter;
 
     private isOver: boolean = false;
     private isStarting: boolean = true;
@@ -25,6 +25,9 @@ export class LocalPlay extends Phaser.Scene {
 
         this.width = this.cameras.main.width;
         this.height = this.cameras.main.height;
+
+        this.isOver = false;
+        this.isStarting = true;
     }
 
     create(data: any) {

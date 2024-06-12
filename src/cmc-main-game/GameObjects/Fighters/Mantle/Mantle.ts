@@ -35,6 +35,7 @@ export default class Mantle extends Fighter {
         // Setup Basic Attack
         this.basicAttack = new MantleBasicAttack(spriteConfig, this);
         this.setScale(2)
+        this.gameHP = this.getHpStat()
         this.setupAnimation();
 
     }
