@@ -39,9 +39,9 @@ export default class Crust extends Fighter {
 
     goLeft() {
         this.setVelocityX(-this.getSpeedStat());
-        if (this.body?.blocked.down && this.isAttackReady) {
+        if (this.body?.blocked.down && this.isAttackReady && !this.isFighterHit) {
             this.anims.play('c-run', true);
-        } else if (this.isAttackReady) {
+        } else if (this.isAttackReady && !this.isFighterHit) {
             this.anims.play('c-fall', true);
         }
         this.flipX = true;
@@ -50,9 +50,9 @@ export default class Crust extends Fighter {
 
     goRight() {
         this.setVelocityX(this.getSpeedStat());
-        if (this.body?.blocked.down && this.isAttackReady) {
+        if (this.body?.blocked.down && this.isAttackReady && !this.isFighterHit) {
             this.anims.play('c-run', true);
-        } else if (this.isAttackReady) {
+        } else if (this.isAttackReady && !this.isFighterHit) {
             this.anims.play('c-fall', true);
         }
         this.flipX = false;
@@ -67,7 +67,7 @@ export default class Crust extends Fighter {
 
     goIdle() {
         this.setVelocityX(0);
-        if (this.body?.blocked.down && this.isAttackReady && !this.isFighterHit) this.anims.play('c-idle', true);
+        if (this.body?.blocked.down && this.isAttackReady && !this.isFighterHit && !this.isDead) this.anims.play('c-idle', true);
     }
 
     goAttack() {
@@ -103,9 +103,13 @@ export default class Crust extends Fighter {
         })
     }
 
+    finalWill(){
+        this.anims.play('c-death', true);
+    }
+
     newEnemyRules(enemy: Fighter) {
         this.scene.physics.add.overlap(enemy.basicAttack, this, () => {
-            if (!this.isFighterHit && enemy.isAttacking) {
+            if (!this.isFighterHit && enemy.isAttacking && !this.isDead) {
                 this.isFighterHit = true
                 this.gameHP -= enemy.getDmgStat();
                 this.tint = 0xff0000;

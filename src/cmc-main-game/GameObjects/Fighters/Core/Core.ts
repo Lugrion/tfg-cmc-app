@@ -55,7 +55,7 @@ export default class Core extends Fighter {
 
     goIdle() {
         this.setVelocityX(0);
-        this.anims.play('idle', true);
+        if(!this.isDead) this.anims.play('idle', true);
     }
 
     goAttack() {
@@ -82,19 +82,25 @@ export default class Core extends Fighter {
         })
     }
 
-    
+    finalWill(){
+        this.tint = 0x5A1F13;
+    }
 
     newEnemyRules(enemy: Fighter) {
         this.scene.physics.add.overlap(enemy.basicAttack, this, () => {
-            if (!this.isFighterHit && enemy.isAttacking) {
+            if (!this.isFighterHit && enemy.isAttacking && !this.isDead) {
                 this.isFighterHit = true
                 this.gameHP -= enemy.getDmgStat();
                 this.tint = 0xff0000;
                 this.scene.time.addEvent({
                     delay: 800,
                     callback: () => {
-                        this.isFighterHit = false;
-                        this.tint = 0xffffff;
+
+                        // In this case the fighter is dead. We want don't want the body to recover the vivid color
+                        if(!this.isDead){
+                            this.isFighterHit = false;
+                            this.tint = 0xffffff;
+                        }
                     }
                 });
             }

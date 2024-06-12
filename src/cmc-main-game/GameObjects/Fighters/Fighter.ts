@@ -1,5 +1,3 @@
-import BasicAttack from "./BasicAttack";
-
 type fighterKeyControls = {
     goJump: number | string,
     goLeft: number | string,
@@ -82,6 +80,8 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
     public isAttacking: boolean = false;
 
+    public isDead: boolean = false;
+
     public gameHP: number = this.getHpStat();
 
     constructor(
@@ -131,7 +131,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
     basicMovement() {
         if (this.controls == undefined) { return }
-       
+
         if (this.controls.goLeft.isDown) {
             this.goLeft()
         } else if (this.controls.goRight.isDown) {
@@ -150,7 +150,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    newEnemyRules(enemy: Fighter){
+    newEnemyRules(enemy: Fighter) {
         console.log("New Rules! " + enemy)
     }
 
@@ -159,18 +159,29 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
         this.newEnemyRules(enemy)
     }
 
+    finalWill(){
+        console.log("Y-you win...");
+    }
+
     update(): void {
-        // Update the weapon
-        this.basicAttack.update()
+        if (this.gameHP > 0) {
+            // Update the weapon
+            this.basicAttack.update()
 
 
 
-        // TO DO
-        // Manage being able to move while being alive
-        this.basicMovement();
+            // TO DO
+            // Manage being able to move while being alive
+            this.basicMovement();
 
 
-        // Check size stats
-        this.body?.setSize(this.getWidthStat(), this.getHeightStat());
+            // Check size stats
+            this.body?.setSize(this.getWidthStat(), this.getHeightStat());
+        } else if(this.isDead == false){
+            this.finalWill()
+            this.isDead = true
+        }  else{
+            this.setVelocity(0,0);
+        }
     }
 }

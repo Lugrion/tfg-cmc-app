@@ -34,22 +34,21 @@ export default class Mantle extends Fighter {
 
         // Setup Basic Attack
         this.basicAttack = new MantleBasicAttack(spriteConfig, this);
-        this.setupAnimation();
-        this.body?.setOffset(0,200)
         this.setScale(2)
+        this.setupAnimation();
 
     }
 
     goLeft() {
         this.setVelocityX(-this.getSpeedStat());
-        if (this.isAttackReady) this.anims.play('m-run', true);
+        if (this.isAttackReady && !this.isFighterHit) this.anims.play('m-run', true);
         this.flipX = true;
         this.basicAttack.flipX = true;
     }
 
     goRight() {
         this.setVelocityX(this.getSpeedStat());
-        if (this.isAttackReady) this.anims.play('m-run', true);
+        if (this.isAttackReady && !this.isFighterHit) this.anims.play('m-run', true);
         this.flipX = false;
         this.basicAttack.flipX = false;
     }
@@ -95,19 +94,21 @@ export default class Mantle extends Fighter {
         })
     }
 
+    finalWill(){
+        this.anims.play('m-death', true);
+    }
+
     newEnemyRules(enemy: Fighter) {
         this.scene.physics.add.overlap(enemy.basicAttack, this, () => {
-            if (!this.isFighterHit && enemy.isAttacking) {
+            if (!this.isFighterHit && enemy.isAttacking && !this.isDead) {
                 this.isFighterHit = true
                 this.anims.stop()
                 this.anims.play('m-hit', true);
                 this.gameHP -= enemy.getDmgStat();
-                // this.tint = 0xff0000;
                 this.scene.time.addEvent({
                     delay: 300,
                     callback: () => {
                         this.isFighterHit = false;
-                        // this.tint = 0xffffff;
                     }
                 });
             }

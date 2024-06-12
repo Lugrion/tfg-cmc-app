@@ -14,6 +14,9 @@ export class LocalPlay extends Phaser.Scene {
     private fighter_P1!: Fighter;
     private fighter_P2!: Fighter;
 
+    private isOver: boolean = false;
+    private isStarting: boolean = true;
+
     constructor() {
         super('LocalPlay');
     }
@@ -80,5 +83,12 @@ export class LocalPlay extends Phaser.Scene {
     update() {
         this.fighter_P1.update();
         this.fighter_P2.update();
+
+        if(this.isStarting){
+            this.fighter_P1.setPosition(100, this.height / 2);
+            this.fighter_P1.setVelocity(0,0)
+            this.fighter_P2.setPosition(860, this.height / 2);
+            this.fighter_P2.setVelocity(0,0)
+        }
     }
 }

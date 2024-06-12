@@ -10,8 +10,10 @@ export default class LocalHUD extends Phaser.Scene {
     private txt_hpP1: Phaser.GameObjects.Text;
     private txt_hpP2: Phaser.GameObjects.Text;
 
+    private txt_start_time: Phaser.GameObjects.Text;
     private txt_time: Phaser.GameObjects.Text;
 
+    private start_countdown: number = 3;
     private countdown: number = 99; // Initial countdown value in seconds
     private countdownTimer!: Phaser.Time.TimerEvent; // Timer event for countdown
 
@@ -31,13 +33,14 @@ export default class LocalHUD extends Phaser.Scene {
 
     create() {
         this.setupTimeHud();
+
         this.setupHpHud();
         this.updateHP();
 
-        // Start countdown timer
+        // Timer for game start
         this.countdownTimer = this.time.addEvent({
-            delay: 1000, // 1 second interval
-            callback: this.updateTimer,
+            delay: 1000,
+            callback: this.updateStartTimer,
             callbackScope: this,
             loop: true
         });
@@ -46,6 +49,12 @@ export default class LocalHUD extends Phaser.Scene {
     setupTimeHud() {
         this.txt_time = this.add.text(this.width / 2, 30, `${this.countdown}`, {
             fontFamily: 'Arial Black', fontSize: 50, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setDepth(-1).setOrigin(0.5).setVisible(false);
+
+        this.txt_start_time = this.add.text(this.width / 2, this.height / 2, `${this.start_countdown}`, {
+            fontFamily: 'Arial Black', fontSize: 100, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setDepth(-1).setOrigin(0.5);
@@ -73,13 +82,42 @@ export default class LocalHUD extends Phaser.Scene {
         this.txt_hpP2.text = "p2HP: " + this.p2HP;
     }
 
+    updateStartTimer() {
+        this.start_countdown--;
+        this.txt_start_time.text = `${this.start_countdown}`;
+
+        // Check if countdown reaches zero
+        if (this.start_countdown === 0) {
+            this.txt_start_time.text = "GO!!!"
+
+            // Wait one second to show text and c
+            this.time.addEvent({
+                delay: 1000,
+                callback: () => {
+                    this.countdownTimer.remove(false);
+                    this.game_scene.isStarting = false;
+                    this.txt_start_time.setVisible(false);
+                    this.txt_time.setVisible(true);
+
+                    // Timer for game
+                    this.countdownTimer = this.time.addEvent({
+                        delay: 1000,
+                        callback: this.updateTimer,
+                        callbackScope: this,
+                        loop: true
+                    });
+                }
+            });
+        }
+    }
+
     updateTimer() {
         this.countdown--;
         this.txt_time.text = `${this.countdown}`;
 
         // Check if countdown reaches zero
         if (this.countdown === 0) {
-            this.countdownTimer.remove(false); // Remove the timer
+            this.countdownTimer.remove(false);
             this.checkTimeOut()
         }
     }
@@ -97,35 +135,28 @@ export default class LocalHUD extends Phaser.Scene {
     checkDeath() {
         // Check for winner
         if (this.p1HP <= 0 && this.p2HP <= 0) {
-            this.time.addEvent({
-                delay: 5000,
-                callback: () => {
-                    this.goNextScene("");
-                }
-            })
+            this.goNextScene("");
         } else if (this.p2HP <= 0) {
-            this.time.addEvent({
-                delay: 5000,
-                callback: () => {
-                    this.goNextScene("p1");
-                }
-            })
+            this.goNextScene("p1");
         } else if (this.p1HP <= 0) {
-            this.time.addEvent({
-                delay: 5000,
-                callback: () => {
-                    this.goNextScene("p2");
-                }
-            })
+            this.goNextScene("p2");
         }
     }
 
     goNextScene(winner: string) {
-        this.scene.stop('LocalPlay')
-        this.scene.remove('LocalPlay')
-        this.scene.stop();
-        this.scene.start('LocalOver', { winner: winner });
-        this.scene.bringToTop('LocalOver')
+        
+
+        this.time.addEvent({
+            // Enough time for the animations to finish
+            delay: 2000,
+            callback: () => {
+                this.scene.stop('LocalPlay')
+                this.scene.remove('LocalPlay')
+                this.scene.stop();
+                this.scene.start('LocalOver', { winner: winner });
+                this.scene.bringToTop('LocalOver')
+            }
+        })
     }
 
     update(): void {
