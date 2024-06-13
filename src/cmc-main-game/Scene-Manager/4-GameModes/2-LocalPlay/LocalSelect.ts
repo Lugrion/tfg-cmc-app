@@ -32,6 +32,7 @@ export class LocalSelect extends Phaser.Scene {
         }).setDepth(100).setOrigin(0.5).setInteractive();
 
         go_back.on('pointerdown', () => {
+            this.scene.stop('LocalSelect');
             this.scene.start('MainMenu');
         })
 

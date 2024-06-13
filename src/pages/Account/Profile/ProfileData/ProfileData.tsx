@@ -39,53 +39,53 @@ export default function ProfileData() {
     return (
         session ?
 
-            <form  onSubmit={handleUpdateProfile} className="form-widget">
-                <div>
-                    <Avatar
-                        url={avatar_url}
-                        size={150}
-                        onUpload={(event: Event, url: string) => {
-                            handleUpdateProfile(event, url);
-                        }}
-                    />
+            <form onSubmit={handleUpdateProfile} className="form-widget p-4 bg-dark text-light rounded">
+                <div className="row mt-3 justify-content-center">
+                    <div className="col-md-4 text-center mb-3">
+                        <Avatar
+                            url={avatar_url}
+                            size={175}
+                            onUpload={(event: Event, url: string) => {
+                                handleUpdateProfile(event, url);
+                            }}
+                        />
+                        {message && <p className="alert alert-info mt-3">{message}</p>}
+                    </div>
+                    <div className="col-md-8">
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input id="email" type="text" className="form-control" value={session.user.email} disabled />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="username" className="form-label">Username</label>
+                            <input
+                                id="username"
+                                type="text"
+                                className="form-control"
+                                required
+                                value={username || ""}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="description" className="form-label">Description</label>
+                            <input
+                                id="description"
+                                type="text"
+                                className="form-control"
+                                value={description || ""}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </div>
+                        <div className="d-grid gap-2">
+                            <button className="btn btn-primary" type="submit" disabled={loading}>
+                                {loading ? "Loading ..." : "Update"}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input id="email" type="text" value={session.user.email} disabled />
-                </div>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        required
-                        value={username || ""}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="description">Description</label>
-                    <input
-                        id="description"
-                        type="text"
-                        value={description || ""}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                {message ? <p className="message">{message}</p> : <></>}
-                <div>
-                    
-                    <button
-                        className="button block primary"
-                        type="submit"
-                        disabled={loading}
-                    >
-                        {loading ? "Loading ..." : "Update"}
-                    </button>
-                </div>
-
-                
             </form>
+
 
             :
 

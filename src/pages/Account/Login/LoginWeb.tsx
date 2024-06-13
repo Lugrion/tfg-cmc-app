@@ -12,17 +12,17 @@ export default function Login() {
     const [password, setPwd] = useState('')
     const [message, setMessage] = useState<string | null>(null);
 
-    const handleLogin = async (event : React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         setLoading(true)
-        const { error }  = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
         })
 
         if (error) {
-            setMessage(error.error_description || error.message)
+            setMessage(error.message)
         } else {
             setMessage('Logged in!!!')
         }
@@ -31,44 +31,52 @@ export default function Login() {
     }
 
     return (
-        <div className="row flex flex-center">
-            <div className="col-6 form-widget">
-                <h1 className="header">CCM Login</h1>
-                <p className="description">Sign into CCM!!</p>
-                <form className="form-widget" onSubmit={handleLogin}>
-                    <div>
-                        <input
-                            className="inputField"
-                            type="email"
-                            placeholder="Your email"
-                            value={email}
-                            required={true}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            className="inputField"
-                            type="password"
-                            placeholder="Your Password"
-                            value={password}
-                            required={true}
-                            onChange={(e) => setPwd(e.target.value)}
-                        />
-                    </div>
-                    {message ? <p className="message">{message}</p> : <></>}
-                    <p className="description">
-                        <Link to="/account/signup">Don't have an account?</Link>
-                    </p>
-                    <p className="description">
-                        <Link to="/account/pwd_reset">Forgot your Password?</Link>
-                    </p>
-                    <div>
-                        <button className={'button block'} disabled={loading}>
-                            {loading ? <span>Loading</span> : <span>Login</span>}
-                        </button>
-                    </div>
-                </form>
+        <div className="row justify-content-center mt-5">
+            <div className="col-md-6">
+                <div className="form-widget p-4 bg-dark text-light rounded">
+                    <h1 className="header text-center mb-4">CCM Login</h1>
+                    <p className="description text-center mb-4">Sign into CCM!!</p>
+                    <form className="form-widget" onSubmit={handleLogin}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email address</label>
+                            <input
+                                id="email"
+                                type="email"
+                                className="form-control"
+                                placeholder="Your email"
+                                value={email}
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                className="form-control"
+                                placeholder="Your Password"
+                                value={password}
+                                required
+                                onChange={(e) => setPwd(e.target.value)}
+                            />
+                        </div>
+                        {message && (
+                            <div className={`alert ${message.includes('sent') ? 'alert-success' : 'alert-danger'}`} role="alert">
+                                {message}
+                            </div>
+                        )}
+                        <div className="d-grid gap-2">
+                            <button className="btn btn-primary" disabled={loading}>
+                                {loading ? 'Loading' : 'Login'}
+                            </button>
+                        </div>
+                        <div className="mt-3 text-center">
+                            <Link to="/account/signup" className="d-block text-light">Don't have an account?</Link>
+                            <Link to="/account/pwd_reset" className="d-block text-light">Forgot your Password?</Link>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     )

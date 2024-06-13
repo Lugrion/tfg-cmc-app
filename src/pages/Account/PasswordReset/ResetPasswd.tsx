@@ -10,7 +10,7 @@ export default function ResetPasswd() {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState<string | null>(null);
 
-    const handleResetPassword = async (event : React.FormEvent<HTMLFormElement>) => {
+    const handleResetPassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
 
@@ -18,6 +18,7 @@ export default function ResetPasswd() {
         const { error } = await supabase.auth.resetPasswordForEmail(
             email,
             {
+                // To be changed when deployed
                 redirectTo: 'http://localhost:5173/account/pwd_reset',
             }
         )
@@ -31,71 +32,77 @@ export default function ResetPasswd() {
     }
 
     return (
-        <div className="row flex flex-center">
-            <h1>Forgotten Password?</h1>
-            {
-                session ?
-
-
-                    <div className="col-6 form-widget">
-                        <h2 className="header">Change you CCM Account Password</h2>
-                        <p className="description">New password</p>
-                        <form className="form-widget" onSubmit={handleResetPassword}>
-                            <div>
-                                <input
-                                    className="inputField"
-                                    type="password"
-                                    placeholder="Your new Password"
-                                    value={password}
-                                    required={true}
-                                    onChange={(e) => setPwd(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    className="inputField"
-                                    type="password"
-                                    placeholder="Confirm new Password"
-                                    value={confirmPassword}
-                                    required={true}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <button className={'button block'} disabled={loading}>
-                                    {loading ? <span>Loading</span> : <span>Change</span>}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-
-                    :
-
-                    
-                    <div className="col-6 form-widget">
-                        <h2 className="header">Send confirmation email to your Email CCM Account</h2>
-                        <p className="description">Check your inbox!!</p>
-                        <form className="form-widget" onSubmit={handleResetPassword}>
-                            <div>
-                                <input
-                                    className="inputField"
-                                    type="email"
-                                    placeholder="Your email"
-                                    value={email}
-                                    required={true}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            {message ? <p className="message">{message}</p> : <></>}
-                            <div>
-                                <button className={'button block'} disabled={loading}>
-                                    {loading ? <span>Loading</span> : <span>Sent</span>}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-            }
+        <div className="row justify-content-center mt-5">
+            <div className="col-md-6">
+                <div className="form-widget p-4 bg-dark text-light rounded">
+                    <h1 className="header text-center mb-4">Forgotten Password?</h1>
+                    {session ? (
+                        <div>
+                            <p className="description text-center mb-4">Change your CCM Account Password</p>
+                            <form className="form-widget" onSubmit={handleResetPassword}>
+                                <div className="mb-3">
+                                    <label htmlFor="new-password" className="form-label">New Password</label>
+                                    <input
+                                        id="new-password"
+                                        className="form-control"
+                                        type="password"
+                                        placeholder="Your new Password"
+                                        value={password}
+                                        required
+                                        onChange={(e) => setPwd(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="confirm-password" className="form-label">Confirm New Password</label>
+                                    <input
+                                        id="confirm-password"
+                                        className="form-control"
+                                        type="password"
+                                        placeholder="Confirm new Password"
+                                        value={confirmPassword}
+                                        required
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
+                                </div>
+                                {message && <p className="alert alert-info">{message}</p>}
+                                <div className="d-grid gap-2">
+                                    <button className="btn btn-primary" disabled={loading}>
+                                        {loading ? 'Loading' : 'Change'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    ) : (
+                        <div>
+                            <p className="description text-center mb-4">Send confirmation email to your CCM Account</p>
+                            <form className="form-widget" onSubmit={handleResetPassword}>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input
+                                        id="email"
+                                        className="form-control"
+                                        type="email"
+                                        placeholder="Your email"
+                                        value={email}
+                                        required
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                {message && (
+                                    <div className={`alert ${message.includes('sent') ? 'alert-success' : 'alert-danger'}`} role="alert">
+                                        {message}
+                                    </div>
+                                )}
+                                <div className="d-grid gap-2">
+                                    <button className="btn btn-primary" disabled={loading}>
+                                        {loading ? 'Loading' : 'Sent'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

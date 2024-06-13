@@ -6,7 +6,7 @@ const Profile = () => {
 
 
     return (
-        <div>
+        <div className="container">
             <h1>My Profile</h1>
             <ProfileData />
             <UpdatePasswd />
