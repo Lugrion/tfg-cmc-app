@@ -81,7 +81,7 @@ export class Preloader extends Phaser.Scene
                 strokeThickness: 8,
                 align: 'center',
             }
-        })
+        }).setVisible(false);
 
         this.textures.addCanvas('core_attack', core_attack.canvas);
     }

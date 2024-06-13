@@ -7,16 +7,22 @@ const Profile = () => {
 
     return (
         <div className="container">
-            <h1>My Profile</h1>
-            <ProfileData />
-            <UpdatePasswd />
-            {/*
 
-            // Retirada por comodidad para el usuario. La funcionalidad no está completo y/o es imperfecta
+            <div className="row">
+                <div className="col-lg-8 col-md-12 mb-4">
+                    <ProfileData />
+                </div>
+                <div className="col-lg-4 col-md-12">
+                    <UpdatePasswd />
+                </div>
+                {/*
 
-            <ControlsData/>
+                // Retirada por comodidad para el usuario. La funcionalidad no está completo y/o es imperfecta
 
-             */}
+                <ControlsData/>
+
+                */}
+            </div>
         </div>
     )
 };

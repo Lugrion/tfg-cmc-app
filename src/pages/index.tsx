@@ -28,8 +28,6 @@ function Index() {
                     {/* Account */}
                     <Route path="account/profile" element={session ? <Profile /> : <Navigate to="/account/login" />} />
 
-                    {/* <Route path="account/login" element={<Login /> } /> */}
-                    {/* <Route path="account/signup" element={<SignUp />} /> */}
                     <Route path="account/login" element={session ? <Navigate to="/account/profile" /> : <Login />} />
                     <Route path="account/signup" element={session ? <Navigate to="/account/profile" /> : <SignUp />} />
                     <Route path="account/pwd_reset" element={<ResetPasswd />} />

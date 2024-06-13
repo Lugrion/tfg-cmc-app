@@ -24,7 +24,7 @@ export default function ResetPasswd() {
         )
 
         if (error) {
-            setMessage(error.error_description || error.message)
+            setMessage(error.message)
         } else {
             setMessage('Email sent!!!');
         }

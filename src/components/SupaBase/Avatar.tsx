@@ -42,7 +42,7 @@ export default function Avatar({ url, size, onUpload }) {
             }
 
             onUpload(event, filePath);
-        } catch (error) {
+        } catch (error : StorageError | null) {
             alert(error.message);
         } finally {
             setUploading(false);
@@ -50,7 +50,7 @@ export default function Avatar({ url, size, onUpload }) {
     }
 
     return (
-        <div className="text-center mb-3">
+        <div className="d-flex flex-column align-items-center text-center mb-3">
             {
                 avatarUrl ? (
                     <img
@@ -63,7 +63,7 @@ export default function Avatar({ url, size, onUpload }) {
                     <div className="avatar no-image border border-light mb-2" style={{ height: size, width: size }} />
                 )
             }
-            <div style={{ width: size, margin: '0 auto' }}>
+            <div style={{ width: size }}>
                 <label className={`btn btn-primary ${uploading ? 'disabled' : ''} d-block`} htmlFor="single">
                     {uploading ? 'Uploading ...' : 'Upload'}
                 </label>
@@ -77,5 +77,5 @@ export default function Avatar({ url, size, onUpload }) {
                 />
             </div>
         </div>
-    );
+    )
 }
