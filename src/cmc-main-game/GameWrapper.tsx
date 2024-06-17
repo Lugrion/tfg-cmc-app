@@ -6,7 +6,7 @@ function GameApp() {
     const phaserRef = useRef();
     const [currentSceneName, setCurrentSceneName] = useState('');
 
-    const updateCurrentScene = (scene) => {
+    const updateCurrentScene = (scene : Phaser.Scene) => {
         setCurrentSceneName(scene.scene.key);
     }
 

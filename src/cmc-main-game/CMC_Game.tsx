@@ -33,7 +33,7 @@ export const CMC_Game = forwardRef(function CMC_Game ({ updateActiveScene }, ref
 
     useEffect(() => {
 
-        EventBus.on('current-scene-ready', (currentScene) => {
+        EventBus.on('current-scene-ready', (currentScene : Phaser.Scene) => {
 
             if (updateActiveScene instanceof Function)
             {

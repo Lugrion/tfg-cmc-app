@@ -168,12 +168,8 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
             // Update the weapon
             this.basicAttack.update()
 
-
-
-            // TO DO
-            // Manage being able to move while being alive
+            // Update the movement
             this.basicMovement();
-
 
             // Check size stats
             this.body?.setSize(this.getWidthStat(), this.getHeightStat());
