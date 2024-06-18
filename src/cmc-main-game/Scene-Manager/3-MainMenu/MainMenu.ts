@@ -18,17 +18,14 @@ export class MainMenu extends Scene {
     create() {
         this.add.image(this.width / 2, 320, 'background');
 
-        // this.add.image(this.width / 2, 300, 'logo').setDepth(100);
-
         this.add.text(this.width / 2, 150, 'C. M. C.', {
             fontFamily: 'Arial Black', fontSize: 60, color: '#ffffff',
             stroke: '#000000', strokeThickness: 15,
             align: 'center'
         }).setDepth(100).setOrigin(0.5);
 
-        // Press to continue to play
 
-
+        // Main Menu entries
         this.menuEntriesBuilder(this.width / 2, 260, 'Local Play', 'LocalSelect', 1);
         this.menuEntriesBuilder(this.width / 2, 340, 'Practice', 'PracticeSelect', 2);
         this.menuEntriesBuilder(this.width / 2, 420, 'Net Play', 'NetSelect', 0);

@@ -1,5 +1,3 @@
-
-
 type mainControls = {
     goJump: number | string,
     goLeft: number | string,
