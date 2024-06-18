@@ -20,7 +20,7 @@ const Layout = () => {
                     <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul className="navbar-nav mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link text-light" to="/play-ccm">Play CCM</Link>
+                                <Link className="nav-link text-light" to="/play-ccm">Play CMC</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link text-light" to="/about">About</Link>

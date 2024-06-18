@@ -34,8 +34,8 @@ export default function Login() {
         <div className="row justify-content-center mt-5">
             <div className="col-md-6">
                 <div className="form-widget p-4 bg-dark text-light rounded">
-                    <h1 className="header text-center mb-4">CCM Login</h1>
-                    <p className="description text-center mb-4">Sign into CCM!!</p>
+                    <h1 className="header text-center mb-4">CMC Login</h1>
+                    <p className="description text-center mb-4">Sign into CMC!!</p>
                     <form className="form-widget" onSubmit={handleLogin}>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email address</label>

@@ -38,7 +38,7 @@ export default function ResetPasswd() {
                     <h1 className="header text-center mb-4">Forgotten Password?</h1>
                     {session ? (
                         <div>
-                            <p className="description text-center mb-4">Change your CCM Account Password</p>
+                            <p className="description text-center mb-4">Change your CMC Account Password</p>
                             <form className="form-widget" onSubmit={handleResetPassword}>
                                 <div className="mb-3">
                                     <label htmlFor="new-password" className="form-label">New Password</label>

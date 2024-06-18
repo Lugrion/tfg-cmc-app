@@ -1,3 +1,5 @@
+import { EventBus } from "../../../Config/EventBus";
+
 export class NetSelect extends Phaser.Scene {
 
     constructor() {
@@ -22,5 +24,6 @@ export class NetSelect extends Phaser.Scene {
             stroke: '#000000', strokeThickness: 15,
             align: 'center'
         }).setDepth(100).setOrigin(0.5);
+        EventBus.emit('current-scene-ready', this);
     }
 }

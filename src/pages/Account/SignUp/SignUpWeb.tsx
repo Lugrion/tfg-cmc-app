@@ -32,7 +32,7 @@ export default function SignUp() {
         <div className="row justify-content-center mt-5">
             <div className="col-md-6">
                 <div className="form-widget p-4 bg-dark text-light rounded">
-                    <h1 className="text-center mb-4">CCM Sign Up</h1>
+                    <h1 className="text-center mb-4">CMC Sign Up</h1>
                     <p className="text-center mb-4">Minimum of 6 characters. Using letters and numbers.</p>
                     <form onSubmit={handleSignUp}>
                         <div className="mb-3">
